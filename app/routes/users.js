@@ -6,7 +6,7 @@ module.exports = function(router) {
   router.route('/:userId')
   .get(function(req, res, next) {
     // Return user
-  }) 
+  })
   .put(function(req, res, next) {
     // Update user
   })
@@ -20,6 +20,7 @@ module.exports = function(router) {
   router.route('/')
   .get(function(req, res, next) {
     // Logic for GET /users routes
+    res.json({a:"asdf"});
   }).post(function(req, res, next) {
     // Create new user
   });
