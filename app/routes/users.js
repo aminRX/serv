@@ -1,7 +1,9 @@
 // app/routes/users.js
+var User = require('../models/user.js');
 
-module.exports = function(router) {
+module.exports = function(router, dbMongo) {
   'use strict';
+
   // This will handle the url calls for /users/:user_id
   router.route('/:userId')
   .get(function(req, res, next) {
@@ -20,7 +22,8 @@ module.exports = function(router) {
   router.route('/')
   .get(function(req, res, next) {
     // Logic for GET /users routes
-    res.json({a:"asdf"});
+    res.json(User.find());
+
   }).post(function(req, res, next) {
     // Create new user
   });

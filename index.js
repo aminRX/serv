@@ -21,13 +21,16 @@ require('./config/environments/' + nconf.get('NODE_ENV'));
 logger.info('[APP] Starting server initialization');
 
 // Initialize Modules
-async.series([
+async.waterfall([
   function initializeDBConnection(callback) {
     require('./config/initializers/database')(callback);
   },
-  function startServer(callback) {
-    server(callback);
-  }], function(err) {
+  function startServer(arg1, callback) {
+    server(arg1, callback);
+  },
+  function startSockets (arg1, callback) {
+    require('./config/initializers/socket')(arg1, callback);
+  }], function(err, results) {
     if (err) {
       logger.error('[APP] initialization failed', err);
     } else {

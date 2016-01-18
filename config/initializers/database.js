@@ -1,10 +1,13 @@
 // config/initializers/database.js
-
+var mongoose = require('mongoose');
+var logger = require('winston');
 module.exports = function(cb) {
-  'use strict';
-  // Initialize the component here then call the callback
-  // More logic
-  //
-  // Return the call back
-  cb();
+  logger.info('[MONGODB] Initializing MongoDB');
+  mongoose.connect('mongodb://127.0.0.1:27017');
+  var dbMongo = mongoose.connection;
+  dbMongo.on('error', console.error.bind(console, 'connection error:'));
+  dbMongo.once('open', function() {
+    logger.info('[MONGODB] connected');
+  });
+  cb(null, dbMongo);
 };

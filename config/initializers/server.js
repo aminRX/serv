@@ -12,25 +12,15 @@ var morgan = require('morgan');
 var logger = require('winston');
 var app = express();
 var server = require('http').Server(app);
-var io = require('socket.io')(server);
-io.on('connection', function (socket) {
-  socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-      console.log("hola mundo");
-    console.log(data);
-  });
-});
-var start =  function(cb) {
+
+var start =  function(dbMongo, cb) {
   'use strict';
-  // Configure express
-
-
   app.use(morgan('common'));
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json({type: '*/*'}));
 
   logger.info('[SERVER] Initializing routes');
-  require('../../app/routes/index')(app);
+  require('../../app/routes/index')(app, dbMongo);
 
   app.use(express.static(path.join(__dirname, 'public')));
 
@@ -47,7 +37,7 @@ var start =  function(cb) {
   logger.info('[SERVER] Listening on port ' + config.get('NODE_PORT'));
 
   if (cb) {
-    return cb();
+    return cb(null, server);
   }
 };
 
